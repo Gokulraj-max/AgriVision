@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+
+# Databases
+*.db
+*.sqlite
+*.sqlite3
+agrivision.db
+agrivision_2.db
+
+# Runtime upload artifacts
+uploads/*
+!uploads/.gitkeep
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# Logs and test artifacts
+*.log
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Node / Frontend / Mobile
+mobile/node_modules/
+mobile/.expo/
+mobile/dist/
+.npm
+.yarn
+
+# OS & IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp

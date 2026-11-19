@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    container_name: agrivision_api
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://agri_user:agri_password@db:5432/agrivision_db
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./uploads:/app/uploads
+      - ./weights:/app/weights
+
+  db:
+    image: postgres:15-alpine
+    container_name: agrivision_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: agri_user
+      POSTGRES_PASSWORD: agri_password
+      POSTGRES_DB: agrivision_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    container_name: agrivision_redis
+    ports:
+      - "6379:6379"
+
+volumes:
+  postgres_data:

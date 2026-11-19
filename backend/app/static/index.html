@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AgriVision AI 2.0 — Real-Time Smart Agriculture Platform</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Tamil:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Global Top Header -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="logo-mark">🌱</div>
+      <div>
+        <h1 class="logo-title">AgriVision AI <span class="badge-v2">2.0</span></h1>
+        <p class="logo-sub">Real-Time Crop Intelligence & Smart Farming Assistant</p>
+      </div>
+    </div>
+
+    <div class="header-center">
+      <div class="view-toggle">
+        <button id="btnViewSimulator" class="toggle-btn active">📱 Mobile App Simulator</button>
+        <button id="btnViewDashboard" class="toggle-btn">🖥️ Cloud Farm Dashboard</button>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <div class="system-status">
+        <span class="pulse-dot"></span>
+        <span class="status-text">FastAPI Engine Live</span>
+      </div>
+      <div class="lang-selector">
+        <button id="btnLangTa" class="lang-btn active">தமிழ் (TA)</button>
+        <button id="btnLangEn" class="lang-btn">English (EN)</button>
+      </div>
+      <a href="/docs" target="_blank" class="docs-btn">API Docs ↗</a>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="main-layout">
+    
+    <!-- LEFT / DESKTOP PANEL: Farm Intelligence & System Stats -->
+    <section class="desktop-panel" id="desktopPanel">
+      <div class="panel-header">
+        <div>
+          <h2>🌾 Green Valley Agricultural Estate</h2>
+          <p class="sub-location">📍 Coimbatore, Tamil Nadu • 14.5 Acres • 7 Crops Monitored</p>
+        </div>
+        <button class="btn-refresh" id="btnRefreshStats">🔄 Refresh Live Data</button>
+      </div>
+
+      <!-- Quick Metrics Grid -->
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-icon">🌱</div>
+          <div>
+            <div class="metric-num">7 Crops</div>
+            <div class="metric-lbl">Tomato, Potato, Rice, Cotton, Maize, Pepper, Apple</div>
+          </div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon">🔬</div>
+          <div>
+            <div class="metric-num" id="statInspectionsCount">24</div>
+            <div class="metric-lbl">Total Folio Inspections</div>
+          </div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon">⚠️</div>
+          <div>
+            <div class="metric-num text-warning" id="statRiskLevel">HIGH RISK</div>
+            <div class="metric-lbl">Microclimate Disease Pressure (76/100)</div>
+          </div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon">⚡</div>
+          <div>
+            <div class="metric-num text-success">1.8 FPS</div>
+            <div class="metric-lbl">Edge / Cloud Frame Rate</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Weather Microclimate Risk Widget -->
+      <div class="dashboard-card weather-dashboard-card">
+        <div class="card-head">
+          <h3>🌦️ Microclimate Disease Risk Forecaster (NASA POWER Integration)</h3>
+          <span class="chip chip-warning">High Pathogen Germination Window</span>
+        </div>
+        <div class="weather-metrics-row">
+          <div class="w-item">
+            <span class="w-lbl">Temperature</span>
+            <span class="w-val" id="dashTemp">24.5 °C</span>
+          </div>
+          <div class="w-item">
+            <span class="w-lbl">Rel. Humidity</span>
+            <span class="w-val" id="dashHumidity">88 %</span>
+          </div>
+          <div class="w-item">
+            <span class="w-lbl">Leaf Wetness</span>
+            <span class="w-val text-warning" id="dashWetness">7.2 hrs</span>
+          </div>
+          <div class="w-item">
+            <span class="w-lbl">Precipitation</span>
+            <span class="w-val" id="dashRain">12.4 mm</span>
+          </div>
+          <div class="w-item">
+            <span class="w-lbl">Wind Speed</span>
+            <span class="w-val" id="dashWind">8.5 km/h</span>
+          </div>
+        </div>
+        <div class="risk-advisory-bar">
+          <span class="advisory-title">⚠️ Agronomist Advisory:</span>
+          <span class="advisory-body" id="dashAdvisory">
+            High relative humidity and extended canopy wetness create favorable infection windows for <strong>Phytophthora infestans (Late Blight)</strong> and <strong>Alternaria solani (Early Blight)</strong>. Avoid foliar sprinkler irrigation; prune lower dense foliage to promote airflow.
+          </span>
+        </div>
+      </div>
+
+      <!-- Recent Foliar Diagnostic Inspections Table -->
+      <div class="dashboard-card">
+        <div class="card-head">
+          <h3>📋 Recent Foliar Diagnostic Records</h3>
+          <span class="table-sub">Auto-synced from Mobile App</span>
+        </div>
+        <div class="table-responsive">
+          <table class="data-table" id="inspectionsTable">
+            <thead>
+              <tr>
+                <th>Preview</th>
+                <th>Crop & Parcel</th>
+                <th>AI Diagnosis</th>
+                <th>Severity Ratio</th>
+                <th>Confidence</th>
+                <th>Date & Time</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="inspectionsTableBody">
+              <!-- Dynamically populated via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 7 Supported Crops Knowledge Catalog -->
+      <div class="dashboard-card">
+        <div class="card-head">
+          <h3>📚 Multi-Crop Supported Disease Knowledge Base</h3>
+          <span class="badge-tag">2-Stage Crop Pre-Identification</span>
+        </div>
+        <div class="crop-catalog-chips" id="cropCatalogChips">
+          <!-- Populated via JS -->
+        </div>
+        <div class="crop-disease-detail" id="cropDiseaseDetail">
+          <!-- Active crop disease details -->
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT / MOBILE SIMULATOR: Interactive Smartphone Frame -->
+    <section class="simulator-wrapper" id="simulatorWrapper">
+      <div class="phone-frame">
+        <!-- Phone Speaker & Notch -->
+        <div class="phone-notch">
+          <div class="phone-speaker"></div>
+          <div class="phone-camera"></div>
+        </div>
+
+        <!-- Phone Status Bar -->
+        <div class="phone-statusbar">
+          <span class="phone-time" id="phoneTime">09:41</span>
+          <div class="status-icons">
+            <span>📶 5G</span>
+            <span>⚡ 98%</span>
+          </div>
+        </div>
+
+        <!-- Phone Screen Container -->
+        <div class="phone-screen" id="phoneScreen">
+
+          <!-- TAB 1: HOME DASHBOARD -->
+          <div class="tab-view active" id="tabHome">
+            <div class="mobile-header">
+              <div>
+                <div class="farmer-name">வணக்கம், Ramesh Kumar 👋</div>
+                <div class="farmer-estate">Green Valley Farm • 14.5 Acres</div>
+              </div>
+              <div class="cloud-sync-chip">🟢 Synced</div>
+            </div>
+
+            <!-- Hero Scan Button -->
+            <div class="mobile-hero-scan" onclick="switchMobileTab('scanner')">
+              <div class="hero-badge">AI REAL-TIME DETECTION</div>
+              <div class="hero-title">Launch Live Leaf Scanner 📷</div>
+              <div class="hero-desc">Scan tomato, potato, rice, cotton, maize, pepper & apple leaves instantly.</div>
+              <button class="hero-action-btn">Open Camera ➔</button>
+            </div>
+
+            <!-- Weather Alert Mini Card -->
+            <div class="mobile-weather-card" onclick="switchMobileTab('weather')">
+              <div class="m-card-top">
+                <span class="m-risk-title">🌦️ Disease Risk: HIGH (76/100)</span>
+                <span class="m-risk-val">24.5°C • 88% RH</span>
+              </div>
+              <p class="m-risk-desc">Favorable condition for Late Blight on Tomato & Potato foliage.</p>
+            </div>
+
+            <!-- Recent Inspections List -->
+            <div class="m-section-head">
+              <h4>Recent Inspections</h4>
+              <span class="m-link" onclick="switchMobileTab('scanner')">+ New Scan</span>
+            </div>
+
+            <div class="m-inspections-list" id="mInspectionsList">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- TAB 2: LIVE CAMERA SCANNER -->
+          <div class="tab-view" id="tabScanner">
+            <!-- Viewfinder Area -->
+            <div class="viewfinder-container">
+              <!-- Video / Canvas Feed -->
+              <video id="webcamVideo" autoplay playsinline muted style="display: none;"></video>
+              <canvas id="viewfinderCanvas"></canvas>
+
+              <!-- Live Overlays -->
+              <div class="reticle-box">
+                <div class="corner c-tl"></div>
+                <div class="corner c-tr"></div>
+                <div class="corner c-bl"></div>
+                <div class="corner c-br"></div>
+              </div>
+
+              <!-- Live Crop & FPS Tag -->
+              <div class="viewfinder-top-bar">
+                <span class="crop-identified-chip" id="vCropChip">🌿 Tomato Leaf (96%)</span>
+                <span class="fps-chip" id="vFpsChip">1.8 FPS</span>
+              </div>
+
+              <!-- Live Sampling Pulse -->
+              <div class="live-scanning-indicator">
+                <span class="indicator-dot"></span>
+                <span id="vStatusText">Live Scanning Active</span>
+              </div>
+            </div>
+
+            <!-- Test Leaf Sample Carousel -->
+            <div class="sample-leaves-section">
+              <span class="sample-title">Click leaf sample or use camera:</span>
+              <div class="sample-leaves-row">
+                <button class="sample-leaf-btn active" onclick="loadSampleLeaf('tomato_early_blight')">🍅 Tomato Blight</button>
+                <button class="sample-leaf-btn" onclick="loadSampleLeaf('potato_late_blight')">🥔 Potato Late Blight</button>
+                <button class="sample-leaf-btn" onclick="loadSampleLeaf('rice_blast')">🌾 Rice Blast</button>
+                <button class="sample-leaf-btn" onclick="loadSampleLeaf('cotton_curl')">☁️ Cotton Leaf Curl</button>
+                <button class="sample-leaf-btn" onclick="loadSampleLeaf('tomato_healthy')">🍃 Healthy Leaf</button>
+              </div>
+            </div>
+
+            <!-- Live Diagnostic Summary Card -->
+            <div class="live-prediction-card">
+              <div class="pred-row">
+                <div>
+                  <div class="pred-disease" id="liveDiseaseName">Early Blight (Alternaria solani)</div>
+                  <div class="pred-disease-ta" id="liveDiseaseTa">தக்காளி ஆரம்பகால கருகல் நோய்</div>
+                </div>
+                <div class="pred-conf-box">
+                  <span class="conf-val" id="liveConfVal">94%</span>
+                  <span class="conf-lbl">Confidence</span>
+                </div>
+              </div>
+
+              <div class="pred-severity-bar">
+                <div class="sev-label-row">
+                  <span>Foliar Severity: <strong id="liveSevPct">18.4%</strong></span>
+                  <span class="sev-tag sev-medium">Moderate</span>
+                </div>
+                <div class="progress-track">
+                  <div class="progress-fill" id="liveSevFill" style="width: 36%;"></div>
+                </div>
+              </div>
+
+              <!-- Controls -->
+              <div class="scanner-btn-row">
+                <button class="btn-scanner-sec" id="btnToggleCamera">📷 Toggle Webcam</button>
+                <button class="btn-scanner-prim" id="btnCaptureInspect">📸 Deep Inspect ➔</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 3: INSPECTION DETAIL REPORT -->
+          <div class="tab-view" id="tabInspection">
+            <div class="detail-header">
+              <button class="back-btn" onclick="switchMobileTab('home')">← Back</button>
+              <h4>Foliar Diagnostic Report</h4>
+              <span class="chip-confirmed">Confirmed</span>
+            </div>
+
+            <div class="detail-scroll">
+              <!-- Heatmap Toggle Image Container -->
+              <div class="heatmap-container">
+                <img id="detailLeafImg" src="" alt="Foliar Analysis">
+                <canvas id="detailHeatmapCanvas"></canvas>
+                <div class="heatmap-toolbar">
+                  <span class="heat-lbl" id="heatModeLabel">🔥 U-Net Lesion Heatmap Active</span>
+                  <button class="btn-toggle-heat" id="btnToggleHeatmap">Toggle Heatmap</button>
+                </div>
+              </div>
+
+              <div class="detail-content">
+                <div class="detail-badge-row">
+                  <span class="crop-tag" id="detailCropTag">Tomato</span>
+                  <span class="detail-time" id="detailTime">Today, 09:42 AM</span>
+                </div>
+
+                <h3 class="detail-disease-title" id="detailDisease">Tomato Early Blight</h3>
+                <h4 class="detail-disease-ta" id="detailDiseaseTa">தக்காளி ஆரம்பகால கருகல் நோய்</h4>
+                <p class="pathogen-text" id="detailPathogen">Pathogen: Alternaria solani (Fungus)</p>
+
+                <!-- Severity Metric -->
+                <div class="metric-box">
+                  <div class="metric-box-head">
+                    <span>Foliar Severity Ratio</span>
+                    <span class="metric-sev-num" id="detailSevNum">18.4%</span>
+                  </div>
+                  <div class="progress-track">
+                    <div class="progress-fill sev-fill-orange" id="detailSevBar" style="width: 36%;"></div>
+                  </div>
+                  <span class="metric-note">Estimated via U-Net foliar canopy segmentation.</span>
+                </div>
+
+                <!-- Guidance Box -->
+                <div class="guidance-box">
+                  <div class="guidance-head">
+                    <span>🌾 Agricultural Guidance & Cultural Management</span>
+                    <button class="btn-voice-play" id="btnPlayDetailVoice">🔊 Listen (தமிழ்)</button>
+                  </div>
+                  <p class="guidance-body" id="detailGuidance">
+                    நிலத்திலிருந்து 30 செ.மீ உயரம் வரை பாதிக்கப்பட்ட கீழ் இலைகளை வெட்டி அகற்றவும். இலைகள் நனையாமல் இருக்க சொட்டு நீர்ப்பாசனத்தைப் பயன்படுத்தவும். தேவைப்படின் அங்கீகரிக்கப்பட்ட தாமிர ஹைட்ராக்சைடு தெளிக்கவும்.
+                  </p>
+                  <div class="disclaimer-note">
+                    ⚠️ <strong>Decision Support:</strong> Aids diagnosis. Consult your local agricultural officer before applying regulated pesticides.
+                  </div>
+                </div>
+
+                <!-- Expert Feedback -->
+                <div class="expert-feedback-box">
+                  <h5>Validate Diagnosis (Active Learning)</h5>
+                  <div class="feedback-btns">
+                    <button class="btn-feed-yes" onclick="submitFeedback(true)">✓ Correct Diagnosis</button>
+                    <button class="btn-feed-no" onclick="submitFeedback(false)">✕ Report Misdiagnosis</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 4: WEATHER RISK -->
+          <div class="tab-view" id="tabWeather">
+            <div class="mobile-subhead">
+              <h3>🌦️ Microclimate Disease Risk</h3>
+              <p>NASA POWER & Meteorological Forecaster</p>
+            </div>
+
+            <div class="weather-scroll">
+              <div class="mobile-risk-hero">
+                <div class="m-hero-left">
+                  <div class="m-risk-alert-lbl">PATHOGEN PRESSURE</div>
+                  <div class="m-risk-level">HIGH RISK</div>
+                  <p class="m-risk-p">Weather conditions indicate elevated foliar fungal pathogen germination.</p>
+                </div>
+                <div class="m-risk-score-circle">
+                  <span class="m-score-val">76</span>
+                  <span class="m-score-sub">/100</span>
+                </div>
+              </div>
+
+              <!-- Mini observations -->
+              <div class="m-obs-grid">
+                <div class="m-obs-cell">
+                  <span class="m-obs-emoji">🌡️</span>
+                  <span class="m-obs-val">24.5 °C</span>
+                  <span class="m-obs-lbl">Temperature</span>
+                </div>
+                <div class="m-obs-cell">
+                  <span class="m-obs-emoji">💧</span>
+                  <span class="m-obs-val">88%</span>
+                  <span class="m-obs-lbl">Rel. Humidity</span>
+                </div>
+                <div class="m-obs-cell">
+                  <span class="m-obs-emoji">🌧️</span>
+                  <span class="m-obs-val">12.4 mm</span>
+                  <span class="m-obs-lbl">Rainfall</span>
+                </div>
+                <div class="m-obs-cell">
+                  <span class="m-obs-emoji">🍃</span>
+                  <span class="m-obs-val">7.2 hrs</span>
+                  <span class="m-obs-lbl">Leaf Wetness</span>
+                </div>
+              </div>
+
+              <!-- 5-Day Outlook -->
+              <h4 class="m-outlook-title">5-Day Agro-Meteorological Forecast</h4>
+              <div class="m-forecast-list" id="mForecastList">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 5: FARMS & FIELDS -->
+          <div class="tab-view" id="tabFarms">
+            <div class="mobile-subhead">
+              <h3>🚜 My Farms & Fields</h3>
+              <p>Parcel Health & Crop Cycle Tracking</p>
+            </div>
+
+            <div class="farms-scroll">
+              <div class="m-farm-card">
+                <div class="m-farm-top">
+                  <div>
+                    <h4 class="m-farm-name">Green Valley Estate</h4>
+                    <span class="m-farm-loc">📍 Coimbatore, Tamil Nadu</span>
+                  </div>
+                  <span class="m-farm-acres">14.5 Acres</span>
+                </div>
+                <div class="m-crop-pills">
+                  <span class="m-pill">🍅 Tomato</span>
+                  <span class="m-pill">🥔 Potato</span>
+                  <span class="m-pill">🌶️ Pepper</span>
+                </div>
+                <div class="m-fields-list">
+                  <div class="m-field-item">
+                    <div>
+                      <span class="m-field-name">Plot 1A — Tomato (Arka Rakshak)</span>
+                      <span class="m-field-sub">Day 48 • Flowering Stage</span>
+                    </div>
+                    <span class="chip chip-success">Normal</span>
+                  </div>
+                  <div class="m-field-item">
+                    <div>
+                      <span class="m-field-name">Plot 2B — Potato (Kufri Jyoti)</span>
+                      <span class="m-field-sub">Day 62 • Tuber Bulking</span>
+                    </div>
+                    <span class="chip chip-warning">Scout Alert</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="m-farm-card">
+                <div class="m-farm-top">
+                  <div>
+                    <h4 class="m-farm-name">Kaveri Delta Field</h4>
+                    <span class="m-farm-loc">📍 Thanjavur, Tamil Nadu</span>
+                  </div>
+                  <span class="m-farm-acres">22.0 Acres</span>
+                </div>
+                <div class="m-crop-pills">
+                  <span class="m-pill">🌾 Rice (CR 1009)</span>
+                  <span class="m-pill">☁️ Cotton</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 6: MULTILINGUAL AI ASSISTANT -->
+          <div class="tab-view" id="tabAssistant">
+            <div class="assistant-head">
+              <div>
+                <h4>🤖 AgriVision AI Assistant</h4>
+                <p>Tamil & English Agricultural Guidance</p>
+              </div>
+              <div class="ast-lang-toggle">
+                <button class="ast-lang-btn active" id="astLangTa" onclick="setAssistantLang('ta')">தமிழ்</button>
+                <button class="ast-lang-btn" id="astLangEn" onclick="setAssistantLang('en')">EN</button>
+              </div>
+            </div>
+
+            <!-- Chat messages container -->
+            <div class="chat-container" id="chatContainer">
+              <div class="chat-msg msg-assistant">
+                <div class="msg-bubble">
+                  <div class="msg-author">🌱 AgriVision AI</div>
+                  <p id="astWelcomeText">
+                    வணக்கம்! நான் அக்ரிவிஷன் AI உதவியாளர். தக்காளி, உருளைக்கிழங்கு, நெல், பருத்தி பயிர்களின் நோய்கள் மற்றும் கரிம தடுப்பு முறைகள் குறித்து கேளுங்கள்.
+                  </p>
+                  <button class="btn-msg-audio" onclick="playVoiceText('வணக்கம்! நான் அக்ரிவிஷன் ஏஐ உதவியாளர்.')">🔊 Listen (தமிழ்)</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Prompt Suggestions -->
+            <div class="chat-suggestions" id="chatSuggestions">
+              <button class="sug-pill" onclick="sendQuickPrompt('தக்காளியில் ஆரம்பகால கருகல் நோய் கட்டுப்பாடு?')">💡 தக்காளி இலைக்கருகல் கட்டுப்பாடு?</button>
+              <button class="sug-pill" onclick="sendQuickPrompt('நெல் பயிரில் குலை நோய் (Blast) அறிகுறிகள்?')">💡 நெல் குலை நோய்?</button>
+              <button class="sug-pill" onclick="sendQuickPrompt('Organic remedies for potato late blight?')">💡 Potato late blight remedy?</button>
+            </div>
+
+            <!-- Input Box -->
+            <div class="chat-input-bar">
+              <button class="btn-mic" id="btnChatMic" onclick="triggerMicInput()">🎙️</button>
+              <input type="text" id="chatInput" placeholder="பயிர் நோய்கள் பற்றி கேளுங்கள்..." onkeydown="if(event.key==='Enter') sendChatMessage()">
+              <button class="btn-send" onclick="sendChatMessage()">➔</button>
+            </div>
+          </div>
+
+        </div> <!-- /phone-screen -->
+
+        <!-- Bottom 5-Tab Navigation Bar -->
+        <nav class="phone-tabbar">
+          <button class="tab-item active" id="tabBtnHome" onclick="switchMobileTab('home')">
+            <span class="tab-icon">🏠</span>
+            <span class="tab-lbl">Home</span>
+          </button>
+          <button class="tab-item" id="tabBtnScanner" onclick="switchMobileTab('scanner')">
+            <span class="tab-icon">🔍</span>
+            <span class="tab-lbl">Live Scan</span>
+          </button>
+          <button class="tab-item" id="tabBtnWeather" onclick="switchMobileTab('weather')">
+            <span class="tab-icon">🌦️</span>
+            <span class="tab-lbl">Weather</span>
+          </button>
+          <button class="tab-item" id="tabBtnFarms" onclick="switchMobileTab('farms')">
+            <span class="tab-icon">🌾</span>
+            <span class="tab-lbl">Farms</span>
+          </button>
+          <button class="tab-item" id="tabBtnAssistant" onclick="switchMobileTab('assistant')">
+            <span class="tab-icon">💬</span>
+            <span class="tab-lbl">Assistant</span>
+          </button>
+        </nav>
+      </div> <!-- /phone-frame -->
+    </section>
+
+  </main>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

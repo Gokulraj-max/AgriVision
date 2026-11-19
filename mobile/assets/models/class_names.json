@@ -1,0 +1,193 @@
+{
+  "model_name": "AgriVision_MobileNetV3_MultiCrop",
+  "input_shape": [
+    1,
+    3,
+    224,
+    224
+  ],
+  "crops": [
+    "Tomato",
+    "Potato",
+    "Rice",
+    "Cotton",
+    "Maize",
+    "Pepper",
+    "Apple"
+  ],
+  "diseases": [
+    {
+      "key": "Tomato___healthy",
+      "crop": "Tomato",
+      "disease": "Healthy",
+      "display_name": "Healthy Tomato Foliage",
+      "display_name_ta": "ஆரோக்கியமான தக்காளி இலை"
+    },
+    {
+      "key": "Tomato___Early_blight",
+      "crop": "Tomato",
+      "disease": "Early Blight",
+      "display_name": "Tomato Early Blight (Alternaria solani)",
+      "display_name_ta": "தக்காளி ஆரம்பகால கருகல் நோய்"
+    },
+    {
+      "key": "Tomato___Late_blight",
+      "crop": "Tomato",
+      "disease": "Late Blight",
+      "display_name": "Tomato Late Blight (Phytophthora infestans)",
+      "display_name_ta": "தக்காளி பிந்தைய கருகல் நோய்"
+    },
+    {
+      "key": "Tomato___Bacterial_spot",
+      "crop": "Tomato",
+      "disease": "Bacterial Spot",
+      "display_name": "Tomato Bacterial Spot (Xanthomonas)",
+      "display_name_ta": "தக்காளி பாக்டீரியா புள்ளி நோய்"
+    },
+    {
+      "key": "Tomato___Yellow_Leaf_Curl",
+      "crop": "Tomato",
+      "disease": "Yellow Leaf Curl Virus",
+      "display_name": "Tomato Yellow Leaf Curl Virus (TYLCV)",
+      "display_name_ta": "தக்காளி இலை சுருள் நச்சுயிரி"
+    },
+    {
+      "key": "Potato___healthy",
+      "crop": "Potato",
+      "disease": "Healthy",
+      "display_name": "Healthy Potato Foliage",
+      "display_name_ta": "ஆரோக்கியமான உருளைக்கிழங்கு இலை"
+    },
+    {
+      "key": "Potato___Early_blight",
+      "crop": "Potato",
+      "disease": "Early Blight",
+      "display_name": "Potato Early Blight (Alternaria solani)",
+      "display_name_ta": "உருளைக்கிழங்கு முன் கருகல் நோய்"
+    },
+    {
+      "key": "Potato___Late_blight",
+      "crop": "Potato",
+      "disease": "Late Blight",
+      "display_name": "Potato Late Blight (Phytophthora infestans)",
+      "display_name_ta": "உருளைக்கிழங்கு பின் கருகல் நோய்"
+    },
+    {
+      "key": "Rice___healthy",
+      "crop": "Rice",
+      "disease": "Healthy",
+      "display_name": "Healthy Paddy Rice Leaf",
+      "display_name_ta": "ஆரோக்கியமான நெல் இலை"
+    },
+    {
+      "key": "Rice___Bacterial_leaf_blight",
+      "crop": "Rice",
+      "disease": "Bacterial Leaf Blight",
+      "display_name": "Rice Bacterial Leaf Blight (Xanthomonas oryzae)",
+      "display_name_ta": "நெல் பாக்டீரியா இலை கருகல் நோய்"
+    },
+    {
+      "key": "Rice___Blast",
+      "crop": "Rice",
+      "disease": "Rice Leaf Blast",
+      "display_name": "Rice Leaf Blast (Magnaporthe oryzae)",
+      "display_name_ta": "நெல் இலை குலை நோய்"
+    },
+    {
+      "key": "Rice___Brown_spot",
+      "crop": "Rice",
+      "disease": "Rice Brown Spot",
+      "display_name": "Rice Brown Spot (Bipolaris oryzae)",
+      "display_name_ta": "நெல் பழுப்பு புள்ளி நோய்"
+    },
+    {
+      "key": "Cotton___healthy",
+      "crop": "Cotton",
+      "disease": "Healthy",
+      "display_name": "Healthy Cotton Foliage",
+      "display_name_ta": "ஆரோக்கியமான பருத்தி இலை"
+    },
+    {
+      "key": "Cotton___Bacterial_blight",
+      "crop": "Cotton",
+      "disease": "Bacterial Blight",
+      "display_name": "Cotton Angular Leaf Spot (Bacterial Blight)",
+      "display_name_ta": "பருத்தி பாக்டீரியா கோண இலைப்புள்ளி"
+    },
+    {
+      "key": "Cotton___Leaf_curl",
+      "crop": "Cotton",
+      "disease": "Cotton Leaf Curl Virus",
+      "display_name": "Cotton Leaf Curl Virus (CLCuV)",
+      "display_name_ta": "பருத்தி இலை சுருள் நச்சுயிரி"
+    },
+    {
+      "key": "Maize___healthy",
+      "crop": "Maize",
+      "disease": "Healthy",
+      "display_name": "Healthy Maize Leaf",
+      "display_name_ta": "ஆரோக்கியமான மக்காச்சோள இலை"
+    },
+    {
+      "key": "Maize___Common_rust",
+      "crop": "Maize",
+      "disease": "Common Rust",
+      "display_name": "Maize Common Rust (Puccinia sorghi)",
+      "display_name_ta": "மக்காச்சோள துரு நோய்"
+    },
+    {
+      "key": "Maize___Northern_leaf_blight",
+      "crop": "Maize",
+      "disease": "Northern Leaf Blight",
+      "display_name": "Maize Northern Leaf Blight (Exserohilum turcicum)",
+      "display_name_ta": "மக்காச்சோள வடக்கு இலை கருகல் நோய்"
+    },
+    {
+      "key": "Pepper___healthy",
+      "crop": "Pepper",
+      "disease": "Healthy",
+      "display_name": "Healthy Pepper Foliage",
+      "display_name_ta": "ஆரோக்கியமான குடைமிளகாய் இலை"
+    },
+    {
+      "key": "Pepper___Bacterial_spot",
+      "crop": "Pepper",
+      "disease": "Bacterial Spot",
+      "display_name": "Pepper Bacterial Spot (Xanthomonas)",
+      "display_name_ta": "மிளகாய் பாக்டீரியா புள்ளி நோய்"
+    },
+    {
+      "key": "Apple___healthy",
+      "crop": "Apple",
+      "disease": "Healthy",
+      "display_name": "Healthy Apple Foliage",
+      "display_name_ta": "ஆரோக்கியமான ஆப்பிள் இலை"
+    },
+    {
+      "key": "Apple___Apple_scab",
+      "crop": "Apple",
+      "disease": "Apple Scab",
+      "display_name": "Apple Scab (Venturia inaequalis)",
+      "display_name_ta": "ஆப்பிள் செதில் புள்ளி நோய்"
+    },
+    {
+      "key": "Apple___Black_rot",
+      "crop": "Apple",
+      "disease": "Black Rot",
+      "display_name": "Apple Black Rot (Botryosphaeria obtusa)",
+      "display_name_ta": "ஆப்பிள் கருப்பு அழுகல் நோய்"
+    }
+  ],
+  "input_mean": [
+    0.485,
+    0.456,
+    0.406
+  ],
+  "input_std": [
+    0.229,
+    0.224,
+    0.225
+  ],
+  "supported_crops_count": 7,
+  "total_classes": 23
+}
