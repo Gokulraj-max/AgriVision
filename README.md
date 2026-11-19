@@ -1,154 +1,238 @@
 # 🌱 AgriVision AI — Intelligent Crop Diagnostic & Health Platform
 
-[![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688.svg)](https://fastapi.tiangolo.com)
-[![PyTorch](https://img.shields.io/badge/Deep%20Learning-PyTorch%202.0-EE4C2C.svg)](https://pytorch.org)
-[![YOLO](https://img.shields.io/badge/Object%20Detection-YOLO-00FFFF.svg)](https://ultralytics.com)
-[![U-Net](https://img.shields.io/badge/Segmentation-U--Net-blue.svg)](https://arxiv.org/abs/1505.04597)
-[![Scikit-Learn](https://img.shields.io/badge/ML-Scikit--Learn-F7931E.svg)](https://scikit-learn.org)
-[![NASA POWER](https://img.shields.io/badge/Weather-NASA%20POWER%20API-0B3D91.svg)](https://power.larc.nasa.gov)
+[![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688.svg?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
+[![PyTorch](https://img.shields.io/badge/Deep%20Learning-PyTorch%202.0-EE4C2C.svg?style=for-the-badge&logo=pytorch&logoColor=white)](https://pytorch.org)
+[![YOLO](https://img.shields.io/badge/Object%20Detection-YOLO-00FFFF.svg?style=for-the-badge)](https://ultralytics.com)
+[![Docker](https://img.shields.io/badge/Deployment-Docker-2496ED.svg?style=for-the-badge&logo=docker&logoColor=white)](https://docker.com)
+[![GitHub Repo](https://img.shields.io/badge/GitHub-AgriVision-181717.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Gokulraj-max/AgriVision)
 
-AgriVision AI is an enterprise-grade precision agriculture and foliar disease diagnosis platform. It enables farmers, agronomists, and agricultural extension officers to upload crop leaf imagery and microclimate telemetry to receive:
-1. **Accurate Disease Classification** (ResNet-50 / Custom CNN)
-2. **Symptom Defect Localization** (YOLO bounding boxes)
-3. **Pixel-Level Lesion Segmentation** (PyTorch U-Net)
-4. **Visible Foliar Severity Estimation** (Computer Vision affected area %)
-5. **Microclimate Epidemiological Risk Forecasting** (NASA POWER API + Random Forest)
-6. **Validated Agronomic Decision Guidance** (Cultural sanitation, IPM, and regulatory warnings)
-7. **Interactive Human-in-the-Loop Expert Verification** and Farm Audit Trail
+AgriVision AI is an enterprise-grade precision agriculture and foliar disease diagnosis platform. It enables farmers, agronomists, and agricultural extension officers to upload crop leaf imagery or stream live camera feeds alongside microclimate telemetry to receive instant, multi-model crop pathology diagnostics and validated agronomic guidance.
 
 ---
 
-## 🌟 Key Application Features
+## 🌟 Key Features
 
-| Feature | ML / CV Component | Output |
+| Capability | Component / Architecture | Description |
 | :--- | :--- | :--- |
-| **Disease Classification** | ResNet-50 / Custom Leaf CNN (PyTorch) | Predicted condition, confidence score, top differential diagnoses |
-| **Uncertainty Safeguard** | Entropy & Threshold Evaluator (<60%) | Explicit "Uncertain / Needs Expert Review" triage flag |
-| **Symptom Defect Detection**| YOLO / Contour Morphology | Bounding boxes `[ymin, xmin, ymax, xmax]`, symptom label, confidence |
-| **Lesion Segmentation** | PyTorch U-Net (Dice + BCE Loss) | Binary lesion mask, green canopy separation, translucent heatmap overlay |
-| **Severity Estimation** | Ratio: $\frac{\text{Affected Pixels}}{\text{Leaf Pixels}} \times 100$ | Affected surface %, severity grade (Healthy, Mild, Moderate, High, Severe) |
-| **Weather Risk Forecasting**| Random Forest / NASA POWER API | Disease risk index (0–100%), risk level, favorable pathogen conditions |
-| **Agronomic Guidance** | Validated Agronomic Recommendation Engine | Immediate actions, cultural sanitation, preventative practices, regulatory warnings |
-| **Batch Processing** | Concurrent Async Pipeline | Multi-file high-throughput scouting analysis |
-| **Farm Management** | SQLAlchemy ORM & Historical Audit Trail | Farm health score, disease prevalence breakdown, longitudinal trends |
-| **Expert Review** | Human-in-the-Loop Feedback Portal | Field agronomist verification, diagnosis override, and comment logging |
+| **📹 Live Camera Recognition** | HTML5 MediaDevices + WebRTC Video | Real-time live camera viewfinder with alignment reticle, camera switcher, and instant auto-recognition upon capture. |
+| **🔬 Disease Classification** | PyTorch ResNet-50 / Leaf CNN | 10 PlantVillage tomato disease categories with confidence scores and top differential diagnoses. |
+| **📦 Symptom Defect Detection**| Ultralytics YOLO / Morphology | Localizes defect areas with precise bounding boxes `[ymin, xmin, ymax, xmax]`, labels, and confidence. |
+| **⬛ Pixel-Level Lesion Mask** | PyTorch U-Net (Dice + BCE) | Pixel-accurate lesion segmentation separating green canopy from necrotic tissue with heatmap overlays. |
+| **📐 Foliar Severity Estimation** | CV Pixel Surface Ratio Math | Affected area surface ratio $\frac{\text{Affected Pixels}}{\text{Leaf Pixels}} \times 100$, classified into Severity Grades (Healthy to Severe). |
+| **⛅ Weather Risk Forecasting**| Random Forest + NASA POWER API | Disease risk index (0–100%) computed from temperature, relative humidity, and 24h precipitation favorability windows. |
+| **🌾 Agronomic Guidance** | Validated IPM Recommendation Engine | Immediate cultural sanitation actions, preventative practices, and chemical regulatory warnings. |
+| **📦 High-Throughput Batch Scouting**| Concurrent Async Pipeline | Multi-file concurrent processing for scouting large crop fields with CSV/JSON exports. |
+| **📊 Farm Analytics & Audit Trail** | SQLAlchemy ORM + SQLite/PostgreSQL | Historical records, longitudinal health trends, and disease prevalence breakdowns per agricultural block. |
+| **📱 Mobile Field Application** | React Native + Expo + MobileNetV3 | Offline-first mobile field companion with on-device camera scanner and SQLite caching. |
 
 ---
 
-## 🏗️ System Architecture
+## 🏗️ Architecture Overview
 
 ```mermaid
 flowchart TD
-    User["👨‍🌾 Farmer / Extension Officer"] -->|Upload Leaf Photo + Microclimate| Gateway["FastAPI API Gateway"]
+    User["👨‍🌾 Farmer / Extension Officer"] -->|Live Camera Capture or Image Upload| Gateway["FastAPI API Gateway"]
     
-    subgraph Services ["AgriVision Modular Service Architecture"]
-        Gateway --> ImgSvc["Image Service (Validation, EXIF, Foliage Filter)"]
-        ImgSvc --> ClassSvc["Classification Service (ResNet-50 / CNN)"]
-        ImgSvc --> DetectSvc["Detection Service (YOLO Symptom Locator)"]
-        ImgSvc --> SegSvc["Segmentation Service (PyTorch U-Net)"]
+    subgraph Pipeline ["AgriVision AI Multi-Model Diagnostic Pipeline"]
+        Gateway --> ImgSvc["1. Image Service (Validation & Foliage Filter)"]
+        ImgSvc --> ClassSvc["2. Classification Service (ResNet-50)"]
+        ImgSvc --> DetectSvc["3. Detection Service (YOLO Symptom Locator)"]
+        ImgSvc --> SegSvc["4. Segmentation Service (PyTorch U-Net)"]
         
-        SegSvc & ImgSvc --> SevSvc["Severity Service (Affected Area % Ratio)"]
-        Gateway --> WeatherSvc["Weather Service (NASA POWER API + ML Model)"]
+        SegSvc & ImgSvc --> SevSvc["5. Severity Math (Surface Area % Ratio)"]
+        Gateway --> WeatherSvc["6. Microclimate Service (Random Forest + NASA POWER)"]
         
-        ClassSvc & SevSvc & WeatherSvc --> RecSvc["Recommendation Service (Validated Agronomic Guidance)"]
-        ClassSvc & DetectSvc & SegSvc & SevSvc & WeatherSvc --> HistSvc["History & Farm Analytics Service"]
+        ClassSvc & SevSvc & WeatherSvc --> RecSvc["7. Agronomic Recommendation Engine"]
+        ClassSvc & DetectSvc & SegSvc & SevSvc & WeatherSvc --> HistSvc["8. Historical Audit & Analytics"]
     end
     
     HistSvc --> DB[("PostgreSQL / SQLite Database")]
-    HistSvc --> Dashboard["🖥️ Interactive AgriVision Web Dashboard"]
-    Expert["🔬 Certified Agronomist"] -->|Submit Feedback| Gateway
+    HistSvc --> WebUI["🖥️ Interactive AgriVision Web Dashboard"]
+    HistSvc --> MobileApp["📱 React Native Mobile App"]
 ```
 
 ---
 
-## 📊 Dataset Strategy
+## 📁 Repository Structure
 
-To ensure genuine field generalization without overfitting to laboratory artifacts, AgriVision AI utilizes a multi-dataset strategy:
-
-* **Dataset A — PlantVillage**: Primary foliar image classification baseline across 10 tomato categories (Healthy, Early Blight, Late Blight, Bacterial Spot, Septoria, Leaf Mold, Spider Mites, Target Spot, Yellow Leaf Curl, Mosaic Virus).
-* **Dataset B — PlantDoc**: In-field, variable-lighting, natural-background image extension providing real-world bounding box and defect localization coordinates.
-* **Dataset C — Plant Pathology 2020 (FGVC7)**: Cross-crop generalization benchmark evaluating model transferability under unseen field conditions.
-* **Dataset D — NASA POWER API**: Real-world atmospheric datasets (daily $T_{2M}$ temperature, $RH_{2M}$ relative humidity, and precipitation) capturing infection favorability windows.
+```text
+AgriVision/
+├── agrivision/                  # Core FastAPI Application & Web Studio
+│   ├── api/                     # REST API route handlers
+│   │   ├── routes_inspection.py # Multi-model diagnosis endpoint (/inspect)
+│   │   ├── routes_farm.py       # Farm entities and analytics
+│   │   ├── routes_weather.py    # NASA POWER & risk assessment
+│   │   ├── routes_models.py     # Model registry & benchmarks
+│   │   ├── routes_samples.py    # Sample specimen gallery
+│   │   └── routes_feedback.py   # Expert review & human-in-the-loop
+│   ├── database/                # SQLAlchemy database session & ORM models
+│   ├── models/                  # PyTorch model definitions (ResNet, U-Net, RF)
+│   ├── services/                # Business logic & inference services
+│   ├── static/                  # Web dashboard UI assets
+│   │   ├── css/styles.css       # Responsive dark-theme agronomy stylesheet
+│   │   ├── js/app.js            # Client-side app & Live Camera controller
+│   │   └── index.html           # Diagnostic Studio dashboard
+│   ├── config.py                # App configuration, disease classes & paths
+│   └── main.py                  # FastAPI entry point & lifespan manager
+├── backend/                     # Extended microservices (Assistant, Voice, Auth)
+├── mobile/                      # React Native / Expo Mobile Application
+│   ├── app/                     # Expo router screens (scanner, farms, assistant)
+│   ├── assets/models/           # On-device MobileNetV3 weights (.pt/.pth)
+│   └── package.json             # Mobile dependencies
+├── samples/                     # Built-in reference crop specimens
+├── scripts/                     # Training, synthetic generation & eval scripts
+│   ├── generate_synthetic_samples.py
+│   ├── train_weather_model.py
+│   ├── train_classifier.py
+│   ├── train_unet.py
+│   └── evaluate_pipeline.py
+├── weights/                     # Pretrained model weights (weather_risk_rf.pkl)
+├── tests/                       # Automated pytest test suites
+├── Dockerfile                   # Production Docker container definition
+├── docker-compose.yml           # Multi-container orchestration (Web, DB, Redis)
+├── render.yaml                  # Render cloud blueprint
+├── Procfile                     # Heroku / Koyeb process definition
+├── requirements.txt             # Python dependencies
+├── start.bat                    # Windows 1-click startup batch script
+└── start.ps1                    # PowerShell startup script
+```
 
 ---
 
-## 🧠 Benchmark Model Evaluations
-
-Comprehensive evaluation results across all 5 production modules:
-
-| Component | Architecture | Benchmark Metric | Score |
-| :--- | :--- | :--- | :--- |
-| **Model 1: Classification** | ResNet-50 (Transfer Learning) | Overall Accuracy<br>Macro F1-Score | **96.4%**<br>**0.954** |
-| **Model 2: Detection** | Ultralytics YOLO / PyTorch | mAP@0.50<br>mAP@[0.50:0.95] | **88.7%**<br>**64.2%** |
-| **Model 3: Segmentation** | PyTorch U-Net (Dice + BCE) | Mean Dice (F1)<br>Mean IoU (Jaccard) | **0.892**<br>**0.806** |
-| **Model 4: Weather Risk** | Random Forest Ensemble | Multi-Class ROC-AUC<br>Brier Calibration | **0.999**<br>**0.078** |
-| **Model 5: Severity Math** | Computer Vision Surface Ratio | Mean Absolute Error (MAE)<br>Correlation ($r$) | **1.62%**<br>**0.995** |
-
----
-
-## 🚀 Quick Start Guide
+## ⚡ Quick Start (Local Run)
 
 ### Prerequisites
-- Python 3.10+ installed
-- Standard libraries (PyTorch, OpenCV, Scikit-learn, FastAPI)
+* Python 3.10+ installed
+* Webcam or smartphone camera (for live recognition)
 
-### 1. Installation
-Clone the repository and install requirements:
+### 1. Clone the Repository
+```bash
+git clone https://github.com/Gokulraj-max/AgriVision.git
+cd AgriVision
+```
+
+### 2. Install Dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Generate Synthetic Specimen Library & Train Models
+### 3. Initialize Specimen Samples & Weights
 ```bash
-# Generate high-resolution realistic leaf specimens
 python scripts/generate_synthetic_samples.py
-
-# Train the microclimate risk Random Forest model
 python scripts/train_weather_model.py
-
-# (Optional) Run PyTorch classifier & U-Net training pipelines
-python scripts/train_classifier.py
-python scripts/train_unet.py
-
-# Run comprehensive multi-model evaluation test suite
-python scripts/evaluate_pipeline.py
 ```
 
-### 3. Launch the Interactive Application
+### 4. Launch the Server
+**Using the provided scripts:**
+* **Windows (PowerShell):** `.\start.ps1`
+* **Windows (Command Prompt):** `start.bat`
+
+**Or direct command:**
 ```bash
-# Windows PowerShell
-.\start.ps1
-
-# Or Windows Command Prompt
-start.bat
-
-# Or direct Python Uvicorn command
 python -m uvicorn agrivision.main:app --host 127.0.0.1 --port 8000 --reload
 ```
 
-Open your browser to:
-👉 **Web Application Dashboard**: [http://127.0.0.1:8000](http://127.0.0.1:8000)  
-👉 **Interactive OpenAPI Documentation**: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+Open your browser at:
+* 🖥️ **Interactive Web Dashboard:** [http://127.0.0.1:8000](http://127.0.0.1:8000)
+* 📜 **Swagger OpenAPI Docs:** [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+* 📖 **ReDoc Documentation:** [http://127.0.0.1:8000/redoc](http://127.0.0.1:8000/redoc)
 
 ---
 
-## 🖥️ Interactive Web Dashboard Tour
+## 📹 Using the Live Camera Feature
 
-1. **Diagnostic Studio**:
-   - Drag-and-drop or select any leaf image.
-   - **1-Click Specimen Library**: Choose between *Healthy Leaf*, *Early Blight*, *Late Blight*, *Bacterial Spot*, *Yellow Leaf Curl*, or *Spider Mites* for instant automated testing.
-   - **Multi-Layer Visual Canvas**: Toggle between *Pathology Heatmap*, *YOLO Defect BBoxes*, *U-Net Lesion Mask*, *Raw Specimen*, or *Side-by-Side Split View* with a real-time layer opacity slider.
-   - **Severity Gauge & Class Probabilities**: View estimated foliar coverage % alongside differential diagnosis probabilities.
-   - **Actionable Guidance**: Access immediate cultural actions and preventative sanitation protocols.
-2. **Batch Inspection**: Upload bulk scouting images with live progress bar and downloadable summary audit tables.
-3. **Farm Health & Analytics**: Monitor overall farm health score, healthy vs. diseased ratios, and disease prevalence breakdowns.
-4. **Inspection History**: Audit historical inspections with filtering, preview thumbnails, and detail inspection modals.
-5. **AI Model & Evaluation Hub**: Deep-dive into model parameters, loss curves, and benchmark metrics.
-6. **Microclimate Risk Lab**: Adjust temperature, humidity, rainfall, and crop stage sliders to test live epidemiological disease risk responses.
+1. Navigate to **Diagnostic Studio** on the dashboard.
+2. In the **Crop Leaf Specimen** card, click the **📹 Live Camera** tab (or **📷 Open Live Camera**).
+3. Allow browser camera permissions.
+4. Align the leaf specimen inside the bounding reticle (*"🌿 Center leaf inside frame"*).
+5. (Optional) Use **🔄 Switch** to toggle between front/back or external USB webcams.
+6. Click **📸 Capture & Recognize**:
+   * The frame is grabbed at full resolution.
+   * The camera is automatically released.
+   * The **5-engine AI diagnostic pipeline executes immediately**, presenting the classification, bounding boxes, segmentation masks, severity score, and agronomic actions in real time!
+
+---
+
+## 🚀 Cloud Deployment Guide
+
+The repository includes pre-configured deployment manifests:
+
+### Option 1: Deploy on Render (1-Click Blueprint)
+1. Sign in to [Render](https://render.com) using your GitHub account.
+2. Click **New +** > **Blueprint**.
+3. Select your `AgriVision` repository.
+4. Render will read `render.yaml`, configure the Docker runtime, build dependencies, and launch your live application with a public HTTPS URL.
+
+### Option 2: Deploy on Railway
+1. Sign in to [Railway](https://railway.app).
+2. Click **New Project** > **Deploy from GitHub repo**.
+3. Select `Gokulraj-max/AgriVision`.
+4. Railway will automatically detect the `Dockerfile`, build the container, and provide a live URL.
+
+### Option 3: Deploy with Docker Compose (Local / Server)
+```bash
+docker-compose up --build
+```
+This boots:
+* **FastAPI Web Service:** `http://localhost:8000`
+* **PostgreSQL Database:** `localhost:5432`
+* **Redis Cache:** `localhost:6379`
+
+---
+
+## 📡 REST API Reference
+
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `POST` | `/api/v1/inspect` | End-to-end diagnostic pipeline (Classification, YOLO, U-Net, Severity, Weather Risk). |
+| `GET` | `/api/v1/farms` | List registered farm entities and metadata. |
+| `POST` | `/api/v1/farms` | Register a new agricultural farm/block. |
+| `GET` | `/api/v1/farms/{id}/health` | Retrieve farm health metrics, disease breakdown, and score. |
+| `GET` | `/api/v1/weather/risk` | Calculate disease favorability risk from temperature, humidity, rainfall. |
+| `GET` | `/api/v1/weather/nasa` | Auto-fetch real-world meteorological telemetry by GPS coordinates. |
+| `GET` | `/api/v1/samples` | List instant 1-click test specimen presets. |
+| `GET` | `/api/v1/models` | List active AI model registry and evaluation benchmark scores. |
+| `POST` | `/api/v1/feedback` | Submit expert review or agronomist diagnostic override. |
+| `GET` | `/health` | Service health status check. |
+
+---
+
+## 📱 Mobile App (React Native & Expo)
+
+The `mobile/` directory contains an offline-first companion application for field agronomists:
+
+```bash
+cd mobile
+npm install
+npx expo start
+```
+* **Offline Inference:** Runs PyTorch MobileNetV3 directly on the device using PyTorch Mobile.
+* **Camera Scanner:** Built with `react-native-vision-camera` and `expo-camera`.
+* **Syncing:** Synchronizes inspections with the backend API when connectivity is restored.
+
+---
+
+## 🧪 Testing & Model Evaluation
+
+Run automated unit and integration tests:
+```bash
+pytest tests/ -v
+```
+
+Run the multi-model benchmark evaluation suite:
+```bash
+python scripts/evaluate_pipeline.py
+```
 
 ---
 
 ## 🛡️ Agricultural Safety & Regulatory Notice
 
 > **Important Agricultural Disclaimer:**  
-> AgriVision AI is designed as a precision decision-support system to assist farmers and agronomists; it does **not** replace licensed in-field plant pathologists. Chemical fungicides, bactericides, or systemic pesticides must **never** be applied without consulting certified regional agricultural extension authorities (e.g. State Agricultural Extension Services, ICAR, KVK, or local agricultural departments) and complying strictly with locally approved registrations and harvest interval limits.
+> AgriVision AI is designed as a precision decision-support system to assist farmers and agronomists; it does **not** replace certified in-field plant pathologists. Chemical fungicides, bactericides, or systemic pesticides must **never** be applied without consulting certified regional agricultural extension authorities (e.g. State Agricultural Extension Services, ICAR, KVK, or local agricultural departments) and complying strictly with locally approved registrations and pre-harvest interval (PHI) limits.
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
