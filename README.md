@@ -31,24 +31,32 @@ AgriVision AI is an enterprise-grade precision agriculture and foliar disease di
 
 ```mermaid
 flowchart TD
-    User["👨‍🌾 Farmer / Extension Officer"] -->|Live Camera Capture or Image Upload| Gateway["FastAPI API Gateway"]
+    User["Farmer / Extension Officer"] -->|Camera Capture or Image Upload| Gateway["FastAPI API Gateway"]
     
-    subgraph Pipeline ["AgriVision AI Multi-Model Diagnostic Pipeline"]
-        Gateway --> ImgSvc["1. Image Service (Validation & Foliage Filter)"]
-        ImgSvc --> ClassSvc["2. Classification Service (ResNet-50)"]
-        ImgSvc --> DetectSvc["3. Detection Service (YOLO Symptom Locator)"]
-        ImgSvc --> SegSvc["4. Segmentation Service (PyTorch U-Net)"]
+    subgraph Pipeline["AgriVision AI Diagnostic Pipeline"]
+        Gateway --> ImgSvc["1. Image Service - Validation"]
+        ImgSvc --> ClassSvc["2. Classification Service - ResNet-50"]
+        ImgSvc --> DetectSvc["3. Detection Service - YOLO"]
+        ImgSvc --> SegSvc["4. Segmentation Service - U-Net"]
         
-        SegSvc & ImgSvc --> SevSvc["5. Severity Math (Surface Area % Ratio)"]
-        Gateway --> WeatherSvc["6. Microclimate Service (Random Forest + NASA POWER)"]
+        SegSvc --> SevSvc["5. Severity Calculation - Area Ratio"]
+        ImgSvc --> SevSvc
+        Gateway --> WeatherSvc["6. Microclimate Risk Service"]
         
-        ClassSvc & SevSvc & WeatherSvc --> RecSvc["7. Agronomic Recommendation Engine"]
-        ClassSvc & DetectSvc & SegSvc & SevSvc & WeatherSvc --> HistSvc["8. Historical Audit & Analytics"]
+        ClassSvc --> RecSvc["7. Agronomic Recommendation Engine"]
+        SevSvc --> RecSvc
+        WeatherSvc --> RecSvc
+        
+        ClassSvc --> HistSvc["8. Historical Audit and Analytics"]
+        DetectSvc --> HistSvc
+        SegSvc --> HistSvc
+        SevSvc --> HistSvc
+        WeatherSvc --> HistSvc
     end
     
-    HistSvc --> DB[("PostgreSQL / SQLite Database")]
-    HistSvc --> WebUI["🖥️ Interactive AgriVision Web Dashboard"]
-    HistSvc --> MobileApp["📱 React Native Mobile App"]
+    HistSvc --> DB[("PostgreSQL or SQLite Database")]
+    HistSvc --> WebUI["Interactive Web Dashboard"]
+    HistSvc --> MobileApp["React Native Mobile App"]
 ```
 
 ---
